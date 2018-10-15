@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi Messenger</title>
+	
+<link href="favicon.ico" rel="icon" type="image/x-icon" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link href="style.css?v=5" rel="stylesheet">	
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+<script>
+
+$(document).ready(function() {
+	$("#alert").hide()
+	
+	$("form").submit(function () {
+		var message = $("#message").val()
+		sendMessage(message)
+		return false
+	});
+	
+	getMessages();
+});
+
+function getMessages(){
+	var url = window.location.href + "messages";
+	$.ajax({
+		url: url,
+		success: function(result) {
+			$("#messages").empty();
+			trHtml = "";
+			$.each(result, function(i, item){
+				var date = new Date(result[i].timestamp * 1000);
+				var time = date.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}).toLowerCase()
+				var formattedDate = $.datepicker.formatDate("M d ", date) + " " + time;
+				trHtml += "<tr><td>" + formattedDate + "</td><td>" + result[i].message + "</td></tr>"
+			});
+			$("#messages").append(trHtml);
+			$("#messages td").click(function(){
+				var message = $(this).text();
+				sendMessage(message)
+			});
+		}
+	});
+}
+
+function sendMessage(message){
+	var url = window.location.href + "send?message=" + message;
+	$.ajax({
+		url: url, 
+		success: function(result) {
+			$("#alert").removeClass("alert-danger").addClass("alert-success")
+			showAlert()
+			getMessages()
+		}
+	});
+}
+
+function showAlert(){
+	$("#alert").slideDown().show()
+	setTimeout(function() {
+		$("#alert").slideUp()
+	}, 5000);
+}
+
+</script>
+</head>
+<body>
+	<div class="container">
+		
+		<form class="form-messenger">
+			<h1 class="form-messenger-heading text-center">Pi Messenger</h1>
+			<input type="text" id="message" class="form-control" placeholder="Message" required autofocus>
+			<div style="margin-top:5px">
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+			</div>
+			<div style="margin-top:5px" id="alert" class="alert">
+				<strong>Success!</strong>
+			</div>
+		</form>
+		
+		<table class="table table-hover form-messenger">
+		  <thead>
+			<tr class="bg-info">
+			  <th scope="col">Time</th>
+			  <th scope="col">Message</th>
+			</tr>
+		  </thead>
+		  <tbody id="messages"></tbody>
+		</table>
+		
+		<div class="form-messenger" style="margin-top:5px">
+			<button class="btn btn-lg btn-primary btn-block" onClick="getMessages()">Refresh</button>
+		</div>
+	</div>
+</body>
+</html>
