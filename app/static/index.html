@@ -28,8 +28,23 @@ $(document).ready(function() {
 		return false
 	});
 	
+	
 	getMessages();
+	setCamera();
 });
+
+function setCamera(){
+
+	var url = window.location.href + "camport";
+	$.ajax({
+		url: url,
+		success: function(result) {
+			var camUrl = window.location.href.replace(":" + window.location.port, ":" + result.cam_port);
+			console.log(camUrl);
+			$("#cam").attr("src", camUrl);
+		}
+	});
+}
 
 function getMessages(){
 	var url = window.location.href + "messages";
@@ -76,9 +91,9 @@ function showAlert(){
 </head>
 <body>
 	<div class="container">
-		
+		<h1 class="form-messenger-heading text-center">Pi Messenger</h1>
+		<img id="cam" class="img-responsive"/>
 		<form class="form-messenger">
-			<h1 class="form-messenger-heading text-center">Pi Messenger</h1>
 			<input type="text" id="message" class="form-control" placeholder="Message" required autofocus>
 			<div style="margin-top:5px">
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>

@@ -29,6 +29,11 @@ def messages():
 		
 	return jsonify(messages)
 	
+@app.route("/camport")
+def camPort():
+	return jsonify({"cam_port" : "8082"})
+	
+	
 @app.after_request
 def addHeaders(r):
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
