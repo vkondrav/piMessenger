@@ -12,6 +12,10 @@ th, td {
   text-align: center;
 }
 
+#cam {
+  margin: 0 auto;
+}
+
 .form-messenger {
   max-width: 330px;
   padding: 15px;

@@ -10,7 +10,7 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<link href="style.css?v=5" rel="stylesheet">	
+<link href="style.css?v=7" rel="stylesheet">	
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script
@@ -87,12 +87,38 @@ function showAlert(){
 	}, 5000);
 }
 
+function takePhoto(){
+	var url = window.location.href + "capture";
+	$.ajax({
+		url: url, 
+		success: function(result) {
+			$("#alert").removeClass("alert-danger").addClass("alert-success");
+			showAlert();
+			getMessages();
+		}
+	});	
+}
+
+function goToGallery(){
+	var url = window.location.href + "photos";
+	window.location.href = url;
+}
+
 </script>
 </head>
 <body>
 	<div class="container">
 		<h1 class="form-messenger-heading text-center">Pi Messenger</h1>
-		<img id="cam" class="img-responsive"/>
+		<div>
+			<div class="caption">
+				<h4>The Guy Cam</h4>
+				<p>
+					<a onClick="takePhoto()" class="btn btn-info btn-xs" role="button">Take Photo</a> 
+					<a onClick="goToGallery()" class="btn btn-default btn-xs" role="button">Gallery</a>
+				</p>
+			</div>
+			<img id="cam" class="img-responsive"/>
+		</div>
 		<form class="form-messenger">
 			<input type="text" id="message" class="form-control" placeholder="Message" required autofocus>
 			<div style="margin-top:5px">

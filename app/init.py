@@ -2,8 +2,16 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 import socket
+import os
 from db import Database
 from speech import SpeechThread
+import requests
+
+CAMERA_PORT = "8082"
+IMAGE_DIRECTORY = "/static/img"
+SNAPSHOT_URL = "http://localhost:8081/0/action/snapshot"
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__, static_url_path="")
 database = Database(app)
@@ -11,6 +19,10 @@ database = Database(app)
 @app.route("/")
 def root():
 	return app.send_static_file("index.html")
+
+@app.route("/photos")
+def photos():
+	return app.send_static_file("photos.html")
 	
 @app.route("/send")
 def send():
@@ -26,14 +38,28 @@ def send():
 @app.route("/messages")
 def messages():
 	messages = database.getMessages()
-		
 	return jsonify(messages)
 	
 @app.route("/camport")
 def camPort():
-	return jsonify({"cam_port" : "8082"})
+	return jsonify({"cam_port" : CAMERA_PORT})
 	
+@app.route("/photos/data")
+def images():
+	images = os.listdir(basedir + IMAGE_DIRECTORY)[:20]
+	images = list(filter(lambda a: a != "lastsnap.jpg", images))
+	images = ["/img/" + item for item in images]
+	return jsonify(sorted(images, reverse = True))
 	
+@app.route("/capture")
+def capture():
+	r = requests.get(SNAPSHOT_URL)
+	if(r.status_code == 200):
+		return jsonify({"success":"image captured"})
+	else:
+		return jsonify({"failure":"capture fail"})
+	
+
 @app.after_request
 def addHeaders(r):
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
