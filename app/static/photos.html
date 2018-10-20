@@ -43,12 +43,21 @@ function getImages(){
 		}
 	});
 }
+	
+function backToApp(){
+	var url = window.location.href.replace("/photos", "");
+	window.location.href = url;
+}
 </script>
 </head>
 <body>
-	<div class="container gallery-container">
+	<div class="container gallery-container text-center">
 
 		<h1>Gallery</h1>
+		
+		<a onClick="backToApp()" class="btn btn-primary btn-sm" role="button">
+			<span class="glyphicon glyphicon-arrow-left"></span> Back To App
+		</a> 
     
 		<div class="tz-gallery">
 		</div>
