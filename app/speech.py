@@ -12,3 +12,15 @@ class SpeechThread(threading.Thread):
 	
 	def run(self):
 		os.system(self.command_path + " \"" + self.text + "\"")
+		
+class ShutterThread(threading.Thread):
+	
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	
+	def __init__(self, shutterFilePath= basedir + "/camera-shutter.wav"):
+		self.shutterFilePath = shutterFilePath
+		threading.Thread.__init__(self)
+	
+	def run(self):
+		os.system("omxplayer " + self.shutterFilePath)
+

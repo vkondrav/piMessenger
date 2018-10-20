@@ -5,6 +5,7 @@ import socket
 import os
 from db import Database
 from speech import SpeechThread
+from speech import ShutterThread
 import requests
 
 CAMERA_PORT = "8082"
@@ -46,13 +47,18 @@ def camPort():
 	
 @app.route("/photos/data")
 def images():
-	images = os.listdir(basedir + IMAGE_DIRECTORY)[:20]
+	images = os.listdir(basedir + IMAGE_DIRECTORY)
 	images = list(filter(lambda a: a != "lastsnap.jpg", images))
+	images = sorted(images, reverse = True, key=imageSort)[:20]
 	images = ["/img/" + item for item in images]
-	return jsonify(sorted(images, reverse = True))
+	return jsonify(images)
+	
+def imageSort(img):
+	return img[3:] #ignore the motion tag that gets attached
 	
 @app.route("/capture")
 def capture():
+	ShutterThread().start()
 	r = requests.get(SNAPSHOT_URL)
 	if(r.status_code == 200):
 		return jsonify({"success":"image captured"})

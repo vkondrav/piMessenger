@@ -16,18 +16,31 @@ th, td {
   margin: 0 auto;
 }
 
+.cam-container {
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+.img-thumbnail {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
 .form-messenger {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
+
 .form-messenger .form-messenger-heading,
 .form-messenger .checkbox {
   margin-bottom: 10px;
 }
+
 .form-messenger .checkbox {
   font-weight: normal;
 }
+
 .form-messenger .form-control {
   position: relative;
   height: auto;
@@ -37,6 +50,7 @@ th, td {
   padding: 10px;
   font-size: 16px;
 }
+
 .form-messenger .form-control:focus {
   z-index: 2;
 }

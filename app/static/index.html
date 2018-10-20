@@ -10,111 +10,32 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<link href="style.css?v=7" rel="stylesheet">	
+<link href="style.css?v=12" rel="stylesheet">	
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-  crossorigin="anonymous"></script>
-<script>
-
-$(document).ready(function() {
-	$("#alert").hide()
-	
-	$("form").submit(function () {
-		var message = $("#message").val()
-		sendMessage(message)
-		return false
-	});
-	
-	
-	getMessages();
-	setCamera();
-});
-
-function setCamera(){
-
-	var url = window.location.href + "camport";
-	$.ajax({
-		url: url,
-		success: function(result) {
-			var camUrl = window.location.href.replace(":" + window.location.port, ":" + result.cam_port);
-			console.log(camUrl);
-			$("#cam").attr("src", camUrl);
-		}
-	});
-}
-
-function getMessages(){
-	var url = window.location.href + "messages";
-	$.ajax({
-		url: url,
-		success: function(result) {
-			$("#messages").empty();
-			trHtml = "";
-			$.each(result, function(i, item){
-				var date = new Date(result[i].timestamp * 1000);
-				var time = date.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}).toLowerCase()
-				var formattedDate = $.datepicker.formatDate("M d ", date) + " " + time;
-				trHtml += "<tr><td>" + formattedDate + "</td><td>" + result[i].message + "</td></tr>"
-			});
-			$("#messages").append(trHtml);
-			$("#messages td").click(function(){
-				var message = $(this).text();
-				sendMessage(message)
-			});
-		}
-	});
-}
-
-function sendMessage(message){
-	var url = window.location.href + "send?message=" + message;
-	$.ajax({
-		url: url, 
-		success: function(result) {
-			$("#alert").removeClass("alert-danger").addClass("alert-success")
-			showAlert()
-			getMessages()
-		}
-	});
-}
-
-function showAlert(){
-	$("#alert").slideDown().show()
-	setTimeout(function() {
-		$("#alert").slideUp()
-	}, 5000);
-}
-
-function takePhoto(){
-	var url = window.location.href + "capture";
-	$.ajax({
-		url: url, 
-		success: function(result) {
-			$("#alert").removeClass("alert-danger").addClass("alert-success");
-			showAlert();
-			getMessages();
-		}
-	});	
-}
-
-function goToGallery(){
-	var url = window.location.href + "photos";
-	window.location.href = url;
-}
-
+<script 
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 </script>
+
+<script
+	src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+	integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+	crossorigin="anonymous">
+</script>
+
+<script
+	src="script.js">
+</script>
+
 </head>
 <body>
 	<div class="container">
 		<h1 class="form-messenger-heading text-center">Pi Messenger</h1>
-		<div>
+		<div class="cam-container">
 			<div class="caption">
-				<h4>The Guy Cam</h4>
+				<h4>Bacci Cam</h4>
 				<p>
-					<a onClick="takePhoto()" class="btn btn-info btn-xs" role="button">Take Photo</a> 
-					<a onClick="goToGallery()" class="btn btn-default btn-xs" role="button">Gallery</a>
+					<a onClick="takePhoto()" class="btn btn-primary btn-sm" role="button">Take Photo</a> 
+					<a onClick="goToGallery()" class="btn btn-default btn-sm" role="button">Gallery</a>
 				</p>
 			</div>
 			<img id="cam" class="img-responsive"/>
