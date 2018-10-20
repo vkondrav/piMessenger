@@ -14,6 +14,7 @@ th, td {
 
 #cam {
   margin: 0 auto;
+  max-height: 480px;
 }
 
 .cam-container {
