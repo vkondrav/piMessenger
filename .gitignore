@@ -107,4 +107,4 @@ venv.bak/
 *.db
 
 # images
-*.jpg
+/app/static/img
