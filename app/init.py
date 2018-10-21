@@ -54,7 +54,7 @@ def images():
 	return jsonify(images)
 	
 def imageSort(img):
-	return img[3:] #ignore the motion tag that gets attached
+	return img[img.index("-") + 1:] #ignore the motion tag that gets attached
 	
 @app.route("/capture")
 def capture():
