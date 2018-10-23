@@ -7,10 +7,7 @@ from db import Database
 from speech import SpeechThread
 from speech import ShutterThread
 import requests
-
-CAMERA_PORT = "8082"
-IMAGE_DIRECTORY = "/static/img"
-SNAPSHOT_URL = "http://localhost:8081/0/action/snapshot"
+import config
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -43,11 +40,11 @@ def messages():
 	
 @app.route("/camport")
 def camPort():
-	return jsonify({"cam_port" : CAMERA_PORT})
+	return jsonify({"cam_port" : config.CAMERA_PORT})
 	
 @app.route("/photos/data")
 def images():
-	images = os.listdir(basedir + IMAGE_DIRECTORY)
+	images = os.listdir(basedir + config.IMAGE_DIRECTORY)
 	images = list(filter(lambda a: a != "lastsnap.jpg", images))
 	images = sorted(images, reverse = True, key=imageSort)[:20]
 	images = ["/img/" + item for item in images]
@@ -59,7 +56,7 @@ def imageSort(img):
 @app.route("/capture")
 def capture():
 	ShutterThread().start()
-	r = requests.get(SNAPSHOT_URL)
+	r = requests.get(config.SNAPSHOT_URL)
 	if(r.status_code == 200):
 		return jsonify({"success":"image captured"})
 	else:
