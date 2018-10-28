@@ -44,10 +44,10 @@ def camPort():
 	
 @app.route("/photos/data")
 def images():
-	images = os.listdir(basedir + config.IMAGE_DIRECTORY)
+	images = os.listdir(basedir + config.RELATIVE_IMG_DIRECTORY)
 	images = list(filter(lambda a: a != "lastsnap.jpg", images))
-	images = sorted(images, reverse = True, key=imageSort)[:20]
-	images = ["/img/" + item for item in images]
+	images = sorted(images, reverse = True, key=imageSort)[:config.MAX_GALLERY_SIZE]
+	images = [config.BASE_IMG_DIRECTORY + "/" + item for item in images]
 	return jsonify(images)
 	
 def imageSort(img):
@@ -84,4 +84,4 @@ def getIp():
 
 if __name__ == '__main__':
 	IP = getIp()
-	app.run(host=IP, port='8080')
+	app.run(host=IP, port=config.APP_PORT)
