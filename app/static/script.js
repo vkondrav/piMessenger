@@ -3,6 +3,7 @@ $(document).ready(function() {
 	
 	$("form").submit(function () {
 		var message = $("#message").val()
+		$("#message").val("")
 		sendMessage(message)
 		return false
 	});
@@ -36,7 +37,7 @@ function getMessages(){
 				var date = new Date(result[i].timestamp * 1000);
 				var time = date.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}).toLowerCase()
 				var formattedDate = $.datepicker.formatDate("M d ", date) + " " + time;
-				trHtml += "<tr><td>" + formattedDate + "</td><td>" + result[i].message + "</td></tr>"
+				trHtml += "<tr><td class=\"date-td\">" + formattedDate + "</td><td class=\"result-td\" >" + result[i].message + "</td></tr>"
 			});
 			$("#messages").append(trHtml);
 			$("#messages td").click(function(){

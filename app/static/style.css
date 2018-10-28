@@ -12,6 +12,14 @@ th, td {
   text-align: center;
 }
 
+.result-td {
+  max-width: 200px;
+}
+
+.date-td {
+  min-width: 100px;
+}
+
 #cam {
   margin: 0 auto;
   max-height: 720px;
