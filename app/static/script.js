@@ -83,3 +83,15 @@ function goToGallery(){
 	var url = window.location.href + "photos";
 	window.location.href = url;
 }
+
+function restartDeluge(){
+	var url = window.location.href + "restartDeluge";
+	$.ajax({
+		url: url, 
+		success: function(result) {
+			$("#alert").removeClass("alert-danger").addClass("alert-success");
+			showAlert();
+			getMessages();
+		}
+	});
+}
