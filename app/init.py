@@ -6,7 +6,6 @@ import os
 from db import Database
 from speech import SpeechThread
 from speech import ShutterThread
-from speech import DelugeThread
 import requests
 import config
 
@@ -62,11 +61,7 @@ def capture():
 		return jsonify({"success":"image captured"})
 	else:
 		return jsonify({"failure":"capture fail"})
-
-@app.route("/restartDeluge")
-def restartDeluge():
-	DelugeThread().start()
-	return jsonify({"success":"deluge restarted"})
+	
 
 @app.after_request
 def addHeaders(r):

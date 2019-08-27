@@ -1,6 +1,5 @@
 import os
 import threading
-import time
 
 class SpeechThread(threading.Thread):
 	
@@ -24,14 +23,4 @@ class ShutterThread(threading.Thread):
 	
 	def run(self):
 		os.system("omxplayer " + self.shutterFilePath)
-
-class DelugeThread(threading.Thread):
-
-	def __init__(self):
-		threading.Thread.__init__(self)
-
-	def run(self):
-		os.system("sudo pkill deluged")
-		time.sleep(5)
-		os.system("deluged")
 
