@@ -64,6 +64,10 @@ def capture():
 
 @app.route("/peers")
 def peers():
+	return app.send_static_file("peers.html")
+
+@app.route("/peers/data")
+def peersData():
 	output = os.popen("deluge-console info -v | grep -w 'Peer' | awk '{ print $2 }' | cut -d':' -f1").read()
 	peers = output.split('\n')
 
