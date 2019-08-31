@@ -61,7 +61,35 @@ def capture():
 		return jsonify({"success":"image captured"})
 	else:
 		return jsonify({"failure":"capture fail"})
+
+@app.route("/peers")
+def peers():
+	output = os.popen("deluge-console info -v | grep -w 'Peer' | awk '{ print $2 }' | cut -d':' -f1").read()
+	peers = output.split('\n')
+
+	result = []
+	for peer in peers:
+
+		if(len(peer) == 0):
+			continue
+
+		formatted = {}
+		url = "http://api.ipapi.com/" + peer + "?access_key=" + config.IPAPI_KEY
+		r = requests.get(url)
+
+		if(r.status_code == 200):
+			json = r.json()
+			formatted["country"] = json["country_name"]
+			formatted["region"] = json["region_name"]
+			formatted["ip"] = json["ip"]
+			lat = json["latitude"]
+			lng = json["longitude"]
+			formatted["latitude"] = lat
+			formatted["longitude"] = lng
+			formatted["gmaps"] = "https://www.google.com/maps/search/?api=1&query=" + repr(lat) + "," + repr(lng)
+			result.append(formatted) 
 	
+	return jsonify(result)
 
 @app.after_request
 def addHeaders(r):
