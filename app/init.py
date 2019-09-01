@@ -85,12 +85,14 @@ def peersData():
 			json = r.json()
 			formatted["country"] = json["country_name"]
 			formatted["region"] = json["region_name"]
+			formatted["city"] = json["city"]
 			formatted["ip"] = json["ip"]
 			lat = json["latitude"]
 			lng = json["longitude"]
 			formatted["latitude"] = lat
 			formatted["longitude"] = lng
 			formatted["gmaps"] = "https://www.google.com/maps/search/?api=1&query=" + repr(lat) + "," + repr(lng)
+			formatted["flag"] = json["location"]["country_flag"]
 			result.append(formatted) 
 	
 	return jsonify(result)

@@ -10,12 +10,44 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+<style>
+    #map {
+      height: 500px;
+    }
+    .loader {
+        margin: auto;
+        width: 50%;
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 48px;
+        height: 48px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+</style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
   crossorigin="anonymous">
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdMk5tQdMHqpc5KUWQQmvyDugHOJhdp1k&callback=initMap">
 </script>
 
 <script>
@@ -29,27 +61,68 @@ function getPeers(){
 		url: url,
 		success: function(result) {
 			$(".list-group").empty();
+            $(".loader").hide();
+
 			peers = "";
 			$.each(result, function(i, item){
+              
                 const template = `
-                <a href=${result[i]["gmaps"]} class=list-group-item>
-                    <div>
-                        <h3>
-                            ${result[i]["country"]}
-                        </h3>
+                <a href=${item["gmaps"]} target="_blank" class=list-group-item>
+                    <div class="media-body">
+                        <div>
+                            <h3>
+                                ${item["country"]} &nbsp
+                            </h3>
+                        </div>
+                        <div>
+                            <h4> 
+                                ${item["region"]}
+                            </h4>
+                        </div>
+                        <div>
+                            <h4> 
+                                ${item["city"]}
+                            </h4>
+                        </div>
                     </div>
-                    <div>
-                        <h4> 
-                            ${result[i]["region"]}
-                        </h4>
+                    <div class="media-right media-middle">
+                        <img src=${item["flag"]}
+                            width="96" height="64"/>
                     </div>
                 </a>
                 `
                 peers += template
+
+                if(map) {
+                    var position = {
+                        lat: item["latitude"],
+                        lng: item["longitude"]
+                    }
+                    var marker = new google.maps.Marker({
+                        position: position, 
+                        url: item["gmaps"],
+                        animation:google.maps.Animation.DROP
+                    });
+                    google.maps.event.addListener(
+                        marker, 
+                        'click', 
+                        function() { window.open(marker.url); })
+                    marker.setMap(map);
+                }
 			});
 			$(".list-group").append(peers);
 		}
 	});
+}
+
+var map;
+function initMap() {
+    map = new google.maps.Map($("#map")[0], {
+        center: {lat: 0, lng: 0},
+        zoom: 1,
+        scrollwheel: false,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+    });
 }
 </script>
 </head>
@@ -57,8 +130,12 @@ function getPeers(){
 	<div class="container cam-container text-center">
 
 		<h1>Seedbox Peers</h1>
-		
+        
+        <div id="map"></div>
+
+        <div class="loader"></div>
+        
 		<div class="list-group text-left">
         </div>
-	</div>
+    </div>
 </body>
