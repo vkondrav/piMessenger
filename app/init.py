@@ -68,7 +68,7 @@ def peers():
 
 @app.route("/peers/data")
 def peersData():
-	output = os.popen("deluge-console info -v | grep -w 'Peer' | awk '{ print $2 }' | cut -d':' -f1").read()
+	output = os.popen("deluge-console info -v | grep -w 'Peer' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'").read()
 	peers = output.split('\n')
 
 	result = []
