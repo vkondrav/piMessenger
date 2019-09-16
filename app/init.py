@@ -5,7 +5,8 @@ import socket
 import os
 from db import Database
 from speech import SpeechThread
-from speech import ShutterThread
+from sound import SoundThread
+from transit import TransitThread
 import requests
 import config
 
@@ -55,7 +56,7 @@ def imageSort(img):
 	
 @app.route("/capture")
 def capture():
-	ShutterThread().start()
+	SoundThread(config.CAMERA_WAV).start()
 	r = requests.get(config.SNAPSHOT_URL)
 	if(r.status_code == 200):
 		return jsonify({"success":"image captured"})
@@ -117,5 +118,6 @@ def getIp():
     return IP
 
 if __name__ == '__main__':
+	TransitThread(config.TRANSIT_POLL, config.TRANSIT_ROUTE, config.TRANSIT_STATION, config.BING_WAV).start()
 	IP = getIp()
 	app.run(host=IP, port=config.APP_PORT)
