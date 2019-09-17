@@ -118,6 +118,6 @@ def getIp():
     return IP
 
 if __name__ == '__main__':
-	TransitThread(config.TRANSIT_POLL, config.TRANSIT_ROUTE, config.TRANSIT_STATION, config.BING_WAV).start()
+	TransitThread(config.TRANSIT, config.BING_WAV).start()
 	IP = getIp()
 	app.run(host=IP, port=config.APP_PORT)
