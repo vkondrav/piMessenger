@@ -47,8 +47,8 @@ class TransitThread(threading.Thread):
 
 		current = {}
 
-		if prediction is list and len(prediction) > 0:
-			current = prediction[0][0]
+		if isinstance(prediction, list) and len(prediction) > 0:
+			current = prediction[0]
 		else:
 			current = prediction
 
