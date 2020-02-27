@@ -1,5 +1,7 @@
 import os
 import threading
+from google.cloud import texttospeech
+from google.cloud.texttospeech import enums
 
 class SoundThread(threading.Thread):
 	

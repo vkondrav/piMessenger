@@ -108,3 +108,6 @@ venv.bak/
 
 # images
 /app/static/img
+
+# tmp
+*/tmp/*

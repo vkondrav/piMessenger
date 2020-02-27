@@ -119,7 +119,8 @@ def getIp():
     return IP
 
 if __name__ == '__main__':
-	logging.basicConfig(filename=config.LOG_FILE_LOCATION, filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	logging.basicConfig(filename=basedir + "/tmp/app.log", filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 	TransitThread(config.TRANSIT, config.BING_WAV).start()
 	IP = getIp()
 	app.run(host=IP, port=config.APP_PORT)

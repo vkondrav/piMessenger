@@ -7,6 +7,7 @@ from pytz import timezone
 from speech import SpeechThread
 from sound import SoundThread
 import logging
+from googleTTS import GoogleTSSThread
 
 class TransitThread(threading.Thread):
 
@@ -20,10 +21,51 @@ class TransitThread(threading.Thread):
 		self.limit = config["limit"]
 		self.weekdays = config["weekdays"]
 		self.soundFile = soundFile
+
+		self.apiKey = config["api_key"]
+		self.driveOrigin = config["drive"]["origin"]
+		self.driveDestination = config["drive"]["destination"]
 		threading.Thread.__init__(self)
 
 	def clock(self):
 		return datetime.now(self.timezone).strftime("%I:%M%p")
+
+	def predictDrive(self):
+		url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + self.driveOrigin + "&destinations=" + self.driveDestination + "&key=" + self.apiKey
+
+		logging.info(url)
+		r = requests.get(url)
+
+		if(r.status_code != 200):
+			return None
+
+		json = r.json()
+		if "rows" not in json:
+			return None
+
+		rows = json["rows"]
+		if not isinstance(rows, list) or len(rows) <= 0:
+			return None
+
+		row = rows[0]
+
+		if "elements" not in row:
+			return None
+		
+		elements = row["elements"]
+		if not isinstance(elements, list) or len(elements) <= 0:
+			return None
+
+		element = elements[0]
+
+		if "duration" not in element:
+			return None
+
+		duration = element["duration"]
+
+		minutes = int(duration["value"]) // 60
+
+		return "Your drive to work is estimated to be " + str(minutes) + " minutes"
 
 	def predictTransit(self):
 		url = "http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r=" + str(self.route) + "&s=" + str(self.stop)
@@ -65,15 +107,13 @@ class TransitThread(threading.Thread):
 		if(int(minutes) > self.limit):
 			return None
 
-		return title + " arriving in " + minutes + " minutes"
+		return title + " arriving in " + minutes + " minutes."
 
 	def predict(self):
-		transit = self.predictTransit()
+		transit = self.predictTransit() or ""
+		drive = self.predictDrive() or ""
 
-		if(transit is None):
-			return self.clock()
-		else:
-			return self.clock() + " " + transit
+		return self.clock() + ". " + transit + " " + drive
 
 	def inTimeSlot(self):
 		now = datetime.now(self.timezone)
@@ -92,7 +132,7 @@ class TransitThread(threading.Thread):
 				message = self.predict()
 				logging.info(message)
 				SoundThread(self.soundFile).start()
-				SpeechThread(message).start()
+				GoogleTSSThread(message).start()
 			else:
 				logging.info("not in time slot")
 
