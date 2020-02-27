@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "premium-axis-183022",
+  "private_key_id": "4bcf7596674fd31bf7217ddd314e15b04f42fd40",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDTnkweFuHxxF0+\nWv0PfyIRYzRZDrJ8FbhHizTX+eeFU1qjsdP/Mhl35k3gsOdfTsjjBw77If5q+MM5\nhccchGj0CxTz8fsjfPfWPmhb2z0tWUpjtBiXmhtDZf4DocPQ6UVHBsHVVrGE3m/m\nh/qRz8dk+eEy7bvXfZhUpBiWWTAFPwDCo9GgPybVmPpvEaWBkVvaFZU/B4oKyLom\n09LpKM6qCPvEQhd2FdFG6aUYCq4mJAz6RZS/cmUN8zukfRlRlKMwULJUEQj3cmq3\niX6Tg2gatHPLZXJL5AGUqKHZpXK9i9GCEAoxZXLQGOqL7vIHbxqnfAbqTObWSotJ\naRtYoUyDAgMBAAECggEAQShlgYJEMZ/nofJ8JtBbWgU0shMva7t4UTcQn0uIOOoQ\nZ4SypMn1Q5C6++scYqEsg5LBzxuJbcCIw+ZoB2TRuArNectRK30oBmSS122q6ZKr\nsAVc6Rj/OgJmcxHU7DdXKGZxOlIGOMYQqGfIBCt41qOF7pt6kgBO7gjUtT5i5coP\nzzmsmLKnXiSJo7NxDC3i1ss9cW7aRg3RdrE8SXShnSJdNqnQMqUfKUAdShXOunOc\nZwJcvwwbqctQWJ3nUReYAU7BbIIwNIpuEnRyaCEEAfRYISjK233fwVlWpm/w2Vhz\nzeoWepExvlZoibj1bCcmJq4G3cqjQuhMtqiPhDc7+QKBgQD2QleDSpZW8lwo8RYb\nILQop8Ok6VDzw3YaGh0Up9iMeFeQeHJJxZqEvLA6PxTh/ClXxmWCVouhckC2nFZu\n271+OZo+cX+ULxXpoHMPlruD7vj/GKGS/jeAd+9tU6A6rK/AB2Cvc2l/+aaCLAmi\nLTHB/C5DfLPN2LjvYCPAZxmCjwKBgQDb/S1qryJCOHdk+1lfbUWytlJXfhco+SkL\njFfphRXppUeVlGp9vwdpIWfBD+dp1zVlsFHY3xpdE9afn5/Ix++DiuGAUH0SmwmK\nLNacF9kuYxDsZrx2kreJ1nB2BssJCJWRV2SDFuUfKExJV4Qx/LbT+JMgQdlHGU6U\nH0yPFnBAzQKBgB/3LprpRKiWnyXlXYQ584jPdhLjAlISDjOHLj0vKGnbeSpUqCkx\nUERopct5wsEu1UMCisynZUqYpRPPKV0MgwVufroaS4A1uHdyD113qHGQxJuAXADT\npOq1JswfLc5P+iRIEOHVbl1hT57YDowRp8LRdEPoXQKcXi0cYqen+mS7AoGAPZ2n\n/t2Wxt1x84LDAYtlniya246hhgRjjqx8Yxe3j32Pk0HCof3DYZrNqLF/q5Fvj0/X\nXNsAU1mfH45h/qahW0Km7n2cyn1KKr1sTsQPPILa1pvf5YYqihzZ2vUEIT+aRN8p\nc94RxqxO0awFhsq1mqFg9AP9i4B3Fd2+X8V1I3ECgYAOJszBHTITLvvxzUMzkUsd\nLWX32c08AEfQzehrnqTFSJ3DRKiBLNExuKLutBQ60R3ap9clsuoJw7C6oilvT+oc\nkOn8Er3RN6sB/0STTn+9LeNDq9Ix1Bgf0VAlOhtEeVYvGsEWVu7OEAxxMSfid7ft\nzMJpewyNIHxbTEcV0tDYSw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "rpi-service-account@premium-axis-183022.iam.gserviceaccount.com",
+  "client_id": "110880204193685479834",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rpi-service-account%40premium-axis-183022.iam.gserviceaccount.com"
+}

@@ -6,6 +6,7 @@ from datetime import datetime
 from pytz import timezone
 from speech import SpeechThread
 from sound import SoundThread
+import logging
 
 class TransitThread(threading.Thread):
 
@@ -24,9 +25,10 @@ class TransitThread(threading.Thread):
 	def clock(self):
 		return datetime.now(self.timezone).strftime("%I:%M%p")
 
-	def predict(self, url):
-		print (url)
+	def predictTransit(self):
+		url = "http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r=" + str(self.route) + "&s=" + str(self.stop)
 
+		logging.info(url)
 		r = requests.get(url)
 
 		if(r.status_code != 200):
@@ -63,9 +65,15 @@ class TransitThread(threading.Thread):
 		if(int(minutes) > self.limit):
 			return None
 
-		message = self.clock() + " " + title + " arriving in " + minutes + " minutes"
+		return title + " arriving in " + minutes + " minutes"
 
-		return message
+	def predict(self):
+		transit = self.predictTransit()
+
+		if(transit is None):
+			return self.clock()
+		else:
+			return self.clock() + " " + transit
 
 	def inTimeSlot(self):
 		now = datetime.now(self.timezone)
@@ -78,15 +86,14 @@ class TransitThread(threading.Thread):
 		return weekday in self.weekdays and current >= self.minTime and current <= self.maxTime
 
 	def run(self):
-		url = "http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r=" + str(self.route) + "&s=" + str(self.stop)
 		while True:
 
 			if(self.inTimeSlot()):
-				message = self.predict(url)
-				if(message is None):
-					message = self.clock()
-				print(message)
+				message = self.predict()
+				logging.info(message)
 				SoundThread(self.soundFile).start()
 				SpeechThread(message).start()
+			else:
+				logging.info("not in time slot")
 
 			time.sleep(self.pollRate)
