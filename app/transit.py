@@ -4,8 +4,6 @@ import time
 import requests
 from datetime import datetime
 from pytz import timezone
-from speech import SpeechThread
-from sound import SoundThread
 import logging
 from googleTTS import GoogleTSSThread
 
@@ -31,7 +29,7 @@ class TransitThread(threading.Thread):
 		return datetime.now(self.timezone).strftime("%I:%M%p")
 
 	def predictDrive(self):
-		url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + self.driveOrigin + "&destinations=" + self.driveDestination + "&key=" + self.apiKey
+		url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&departure_time=now&origins=" + self.driveOrigin + "&destinations=" + self.driveDestination + "&key=" + self.apiKey
 
 		logging.info(url)
 		r = requests.get(url)
@@ -58,10 +56,10 @@ class TransitThread(threading.Thread):
 
 		element = elements[0]
 
-		if "duration" not in element:
+		if "duration_in_traffic" not in element:
 			return None
 
-		duration = element["duration"]
+		duration = element["duration_in_traffic"]
 
 		minutes = int(duration["value"]) // 60
 
@@ -131,8 +129,7 @@ class TransitThread(threading.Thread):
 			if(self.inTimeSlot()):
 				message = self.predict()
 				logging.info(message)
-				SoundThread(self.soundFile).start()
-				GoogleTSSThread(message).start()
+				GoogleTSSThread(message, self.soundFile).start()
 			else:
 				logging.info("not in time slot")
 

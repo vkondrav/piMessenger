@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /home/pi/piMessenger/app/init.py
+ExecStart=/home/pi/piMessenger/service.sh
 User=pi
 Restart=on-abort
 

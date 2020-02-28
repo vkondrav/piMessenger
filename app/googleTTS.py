@@ -3,10 +3,13 @@ import threading
 import logging
 from google.cloud import texttospeech
 from google.cloud.texttospeech import enums
+from sound import SoundThread
+import time
 
 class GoogleTSSThread(threading.Thread):
     
-    def __init__(self, message):
+    def __init__(self, message, soundFile):
+        self.soundFile = soundFile
         self.message = message
         threading.Thread.__init__(self)
     
@@ -28,5 +31,8 @@ class GoogleTSSThread(threading.Thread):
         fileName = basedir + "/tmp/google_tts.mp3"
         with open(fileName, 'wb') as out:
             out.write(response.audio_content)
-            logging.info("Audio content written to file " + fileName)
+            logging.info("audio content written to file " + fileName)
+
+            SoundThread(self.soundFile).start()
+            time.sleep(0.5)
             os.system("omxplayer " + fileName)

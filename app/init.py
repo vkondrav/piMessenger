@@ -4,7 +4,6 @@ from flask import jsonify
 import socket
 import os
 from db import Database
-from speech import SpeechThread
 from sound import SoundThread
 from transit import TransitThread
 import requests

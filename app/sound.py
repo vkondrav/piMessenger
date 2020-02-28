@@ -2,6 +2,7 @@ import os
 import threading
 from google.cloud import texttospeech
 from google.cloud.texttospeech import enums
+import logging
 
 class SoundThread(threading.Thread):
 	
@@ -12,4 +13,5 @@ class SoundThread(threading.Thread):
 		threading.Thread.__init__(self)
 	
 	def run(self):
+		logging.info("playing sound file " + self.soundPath)
 		os.system("omxplayer " + self.soundPath)
